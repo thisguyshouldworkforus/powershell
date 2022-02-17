@@ -21,4 +21,6 @@ ForEach ($file in $filelist)
     Write-Host -------------------------------------------------------------------------------
      
     Start-Process "D:\Applications\HandBrake\HandBrakeCLI.exe" -ArgumentList "-Z `"H.264 MKV 1080p30`" -i `"$oldfile`" -o `"$newfile`" --verbose=0" -Wait -NoNewWindow
+
+    Remove-Item -Path "`"$oldfile`"" -Force
 }
