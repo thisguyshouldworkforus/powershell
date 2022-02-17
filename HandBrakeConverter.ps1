@@ -1,5 +1,3 @@
-# http://www.waynezim.com/2014/06/use-powershell-to-batch-convert-videos-using-handbrake/
-
 $filelist = Get-ChildItem "C:\Users\alexa\Downloads\Reading Rainbow"
  
 $num = $filelist | Measure-Object
