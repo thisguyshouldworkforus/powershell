@@ -1,0 +1,5 @@
+Windows Registry Editor Version 5.00
+
+; Set up the enrollment token for organizational unit: hickenair.com
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome]
+"CloudManagementEnrollmentToken"="a2969a32-e779-4cb7-974c-e891b4aa7073"
