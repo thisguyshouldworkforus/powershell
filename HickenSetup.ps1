@@ -1,20 +1,28 @@
-# Adapted from:
-# https://github.com/skycommand/AdminScripts/blob/master/AppX/Remove%20notorious%20AppX%20packages.ps1
-
-#Requires -RunAsAdministrator
+# Requires -RunAsAdministrator
 Import-Module -Name Appx -ErrorAction Stop
 
-# Only run if the PowerShell Version is less than 7
-Select-Object -InputObject $PSVersionTable > "$env:HOMEPATH\psversiontable.txt"
-Get-Content -Path "$env:HOMEPATH\psversiontable.txt" | Where-Object{$_ -match 'PSVersion'} > "$env:HOMEPATH\psversion.txt"
-$versionInfo = Get-Content -Path "$env:HOMEPATH\psversion.txt"
-if ($versionInfo -match '^(PSVersion)(\s+)([3456]{1})(\.)(\d+)(\.)(\d+)(\.)(\d+)'){
-    Write-Host "PowerShell Version" $Matches[3]
-    Remove-Item -Path "$env:HOMEPATH\psversion*"
-    } else {
-        Write-Error "The APPX PowerShell Module is too buggy in version 7! Quitting ...."
-        Remove-Item -Path "$env:HOMEPATH\psversion*"
-        Exit-PSSession
+# Remove unwanted apps
+$GetPackageApps = @(
+    "Microsoft 365 - en-us",
+    "Microsoft 365 - es-es",
+    "Microsoft 365 - fr-fr",
+    "Office 16 Click-to-Run Extensibility Component",
+    "Office 16 Click-to-Run Localization Component",
+    "Office 16 Click-to-Run Licensing Component",
+    "Microsoft OneDrive",
+    "Microsoft Edge",
+    "Microsoft Edge Update"    
+)
+
+foreach ($app in $GetPackageApps){
+    Write-Output $("Looking for {0}" -f $app)
+    $APPS = Get-Package $app
+    if ($null -ne $APPS){
+        foreach ($AAPPSS in $APPS) {
+            Write-Output $("Removing {0}" -f $AAPPSS.ToString())
+            Uninstall-Package -Name $AAPPSS -Force -AllVersions
+        }
+    }
 }
 
 $appxlist = @(
